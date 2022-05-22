@@ -1,11 +1,10 @@
-import os
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import requests
 import json
 
 # Telegram bot token
-API_TOKEN = os.environ["tg"]
+API_TOKEN = "___TELEGRAM_API_TOKEN___"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -40,7 +39,7 @@ async def text(message: types.Message):
         # RapidAPI necessary host header
         "X-RapidAPI-Host": "dimondevosint.p.rapidapi.com",
         # API key that you can get by subscribing to the API
-        "X-RapidAPI-Key": os.environ["rapi"]
+        "X-RapidAPI-Key": "___RAPIDAPI_API_KEY___"
     }
 
     # Send the request with all the parameters and print the result for debugging
