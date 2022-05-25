@@ -3,6 +3,7 @@
 <p align="center">Это моя версия телеграм бота Глаз Бога. Работает прекрасно, стабильно и выдает много информации:</p>
 <p align="center">Сделан программистом DimonDev: https://youtube.com/dimondev</p>
 <h3 align="center"><a href="https://t.me/t3_avtootvetchik_bot"> > А вот бот в ТЕЛЕГРАМЕ < </a></h3>
+<h3 align="center"><img src="Снимок13.PNG" alt="god" height="500px"></h3>
 <h1 align="center"><b>Установка</b></h1>
 <p>Он устанавливается очень просто:</p>
 
