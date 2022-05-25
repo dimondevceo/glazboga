@@ -12,3 +12,14 @@ git clone https://github.com/SegYT/glazboga
 cd glazboga
 pip install -r requirements.txt
 ```
+<p>Теперь запускаем скрипт:</p>
+
+```
+python main.py
+```
+
+<p>Если ты сделал все правильно, то программа должна написать:</p>
+
+```
+!BOT STARTED!
+```
