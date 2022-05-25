@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
+print("!BOT STARTED!")
 
 # Message handler that sends greeting when bot started
 @dp.message_handler(commands=['start', 'help'])
