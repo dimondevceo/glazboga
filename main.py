@@ -1,3 +1,6 @@
+# First of all, you need to register and get a subscription to this api:
+# https://rapidapi.com/segnayt-e1RorVbq3qe/api/dimondevosint/
+
 import logging
 from aiogram import Bot, Dispatcher, executor, types
 import requests
