@@ -56,10 +56,14 @@ async def text(message: types.Message):
     # Send the formatted data to the user on Telegram
     await bot.send_message(message.chat.id,f"""
                            
-                           ФИО: {data['name']}
-                           Страна: {data['country']}
-                           Оператор: {data['operator']}
+                           👨 ФИО: {data['name']}
+                           🏳️ Страна: {data['country']}
+                           📱 Оператор: {data['operator']}
+                           📓 Объявления: {data['obyavleniya']}
+
+                           @dimondevchat
                            
+                           Код бота: https://github.com/SegYT/glazboga/
                            """)
 
 
