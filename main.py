@@ -7,7 +7,7 @@ import requests
 import json
 
 # Telegram bot token
-API_TOKEN = "___TELEGRAM_API_TOKEN___"
+API_TOKEN = "6586430388:AAHafNCthbgvBgLF19w1B1N_CSMdnzm8HUs"
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -43,7 +43,7 @@ async def text(message: types.Message):
         # RapidAPI necessary host header
         "X-RapidAPI-Host": "dimondevosint.p.rapidapi.com",
         # API key that you can get by subscribing to the API
-        "X-RapidAPI-Key": "___RAPIDAPI_API_KEY___"
+        "X-RapidAPI-Key": "e24b687f37msh0ebc425c19a4b2bp1546b2jsnb9078aefaa70"
     }
 
     # Send the request with all the parameters and print the result for debugging
