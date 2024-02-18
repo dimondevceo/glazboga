@@ -1,4 +1,4 @@
-<a href="https://www.youtube.com/c/DimonDev?sub_confirmation=1"><img src="https://i.pinimg.com/originals/a5/10/2e/a5102eada32982c1ccac65804eab67c1.png" height="50px"></a> [![](https://s18955.pcdn.co/wp-content/uploads/2018/02/github.png)](https://probivapi.com)
+<a href="https://www.youtube.com/c/DimonDev?sub_confirmation=1"><img src="https://i.pinimg.com/originals/a5/10/2e/a5102eada32982c1ccac65804eab67c1.png" height="50px"></a> [![Попробовать бесплатно](https://s18955.pcdn.co/wp-content/uploads/2018/02/github.png)](https://probivapi.com)
 <h1 align="center"><b>Глаз Бога</b></h1>
 <p align="center">Это моя версия телеграм бота Глаз Бога. Работает прекрасно, стабильно и выдает много информации:</p>
 <p align="center">Сделан программистом DimonDev: https://youtube.com/dimondev</p>
