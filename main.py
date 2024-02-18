@@ -1,7 +1,6 @@
 # First of all, you need to register and get a subscription to this api:
 # https://probivapi.com/
 
-import logging
 from aiogram import Bot, Dispatcher, executor, types
 import requests
 import json
@@ -11,9 +10,6 @@ API_TOKEN = "___TELEGRAM_API_TOKEN___"
 
 # ProbivAPI secret key
 PROBIVAPI_KEY = "___PROBIVAPI_TOKEN___"
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
@@ -48,7 +44,7 @@ async def text(message: types.Message):
     }
 
     # Send the request with all the parameters and print the result for debugging
-    response = requests.request("GET", url, headers=head)
+    response = requests.get(url, headers=head)
     print(response.text)
 
     # Load the data of the response into a JSON object
@@ -58,19 +54,23 @@ async def text(message: types.Message):
         json_response = {}
 
     # Catch errors depending on the response
+    # Integrated TrueCaller API
     try:
         truecaller_api_name = str(json_response['truecaller']['data'][0]['name'])
     except Exception:
         truecaller_api_name = 'Not found'
+    # Integrated Numbuster API
     try:
         numbuster_api_name = str(json_response['numbuster']['averageProfile']['firstName']) + \
         str(json_response['numbuster']['averageProfile']['lastName'])
     except Exception:
         numbuster_api_name = 'Not found'
+    # Integrated EyeCon API
     try:
         eyecon_api_name = str(json_response['eyecon'])
     except Exception:
         eyecon_api_name = 'Not found'
+    # Integrated ViewCaller API
     try:
         viewcaller_name_list = []
         for tag in json_response['viewcaller']:
