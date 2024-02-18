@@ -2,7 +2,7 @@
 <h1 align="center"><b>Глаз Бога</b></h1>
 <p align="center">Это моя версия телеграм бота Глаз Бога. Работает прекрасно, стабильно и выдает много информации:</p>
 <p align="center">Сделан программистом DimonDev: https://youtube.com/dimondev</p>
-<h3 align="center"><a href="https://probivapi.com"> > Попробовать API < </a></h3>
+<h1 align="center"><a href="https://probivapi.com"> > Попробовать API < </a></h1>
 <h3 align="center"><img src="Снимок13.PNG" alt="god" height="500px"></h3>
 <h1 align="center"><b>Установка</b></h1>
 <p>Он устанавливается очень просто:</p>
