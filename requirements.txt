@@ -1,3 +1,2 @@
-logging
 aiogram
 requests
