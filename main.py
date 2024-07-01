@@ -1,9 +1,12 @@
 # First of all, you need to register and get a subscription to this api:
 # https://probivapi.com/
 
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+from aiogram.types import Message
 import requests
 import json
+import asyncio
 
 # Telegram bot token
 API_TOKEN = "___TELEGRAM_API_TOKEN___"
@@ -13,13 +16,13 @@ PROBIVAPI_KEY = "___PROBIVAPI_TOKEN___"
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
 print("!BOT STARTED!")
 
 # Message handler that sends greeting when bot started
-@dp.message_handler(commands=['start', 'help'])
-async def send_welcome(message: types.Message):
+@dp.message(Command(commands=['start', 'help']))
+async def send_welcome(message: Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
@@ -27,15 +30,14 @@ async def send_welcome(message: types.Message):
 
 
 # This is the main probiv function that returns a json and formats it, then sends it
-@dp.message_handler(content_types=['text'])
-async def text(message: types.Message):
-
+@dp.message(content_types=['text'])
+async def text(message: Message):
     # Get the message text and interpret it as a phone number
     nomer = message.text
     print(nomer)
 
     # The endpoint for the probiv API that passes as a query the phone number
-    url = "https://probivapi.com/api/phone/info/" + nomer
+    url = f"https://probivapi.com/api/phone/info/{nomer}"
 
     # Necessary headers for the API to work
     head = {
@@ -53,39 +55,36 @@ async def text(message: types.Message):
     except Exception:
         json_response = {}
 
-    # Catch errors depending on the response
-    # Integrated TrueCaller API
-    # try:
-    #     truecaller_api_name = str(json_response['truecaller']['data'][0]['name'])
-    # except Exception:
-    #     truecaller_api_name = 'Not found'
-    # Integrated Numbuster API
-    # try:
-    #     numbuster_api_name = str(json_response['numbuster']['averageProfile']['firstName']) + \
-    #     str(json_response['numbuster']['averageProfile']['lastName'])
-    # except Exception:
-    #     numbuster_api_name = 'Not found'
     # Integrated CallApp API
-    try:
-        callapp_api_name = str(json_response['callapp']['name'])
-    except Exception:
-        callapp_api_name = 'Not found'
+    callapp_data = json_response.get('callapp', {})
+    callapp_api_name = callapp_data.get('name', 'Not found')
+    callapp_emails = ', '.join([email.get('email') for email in callapp_data.get('emails', [])])
+    callapp_websites = ', '.join([site.get('websiteUrl') for site in callapp_data.get('websites', [])])
+    callapp_addresses = ', '.join([addr.get('street') for addr in callapp_data.get('addresses', [])])
+    callapp_description = callapp_data.get('description', 'Not found')
+    callapp_opening_hours = ', '.join([f"{day}: {', '.join(hours)}" for day, hours in callapp_data.get('openingHours', {}).items()])
+    callapp_lat = callapp_data.get('lat', 'Not found')
+    callapp_lng = callapp_data.get('lng', 'Not found')
+    callapp_spam_score = callapp_data.get('spamScore', 'Not found')
+    callapp_priority = callapp_data.get('priority', 'Not found')
+
     # Integrated EyeCon API
-    try:
-        eyecon_api_name = str(json_response['eyecon'])
-    except Exception:
-        eyecon_api_name = 'Not found'
+    eyecon_api_name = json_response.get('eyecon', 'Not found')
+    
     # Integrated ViewCaller API
-    try:
-        viewcaller_name_list = []
-        for tag in json_response['viewcaller']:
-            viewcaller_name_list.append(tag['name'])
-        viewcaller_api_name = ', '.join(viewcaller_name_list)
-    except Exception:
-        viewcaller_api_name = 'Not found'
+    viewcaller_name_list = [tag.get('name', 'Not found') for tag in json_response.get('viewcaller', [])]
+    viewcaller_api_name = ', '.join(viewcaller_name_list)
 
     # Send the formatted data to the user on Telegram
-    await bot.send_message(message.chat.id,f"""📱 ФИО (CallApp): {callapp_api_name}
+    await message.answer(f"""📱 ФИО (CallApp): {callapp_api_name}
+📧 Emails (CallApp): {callapp_emails}
+🌐 Сайты (CallApp): {callapp_websites}
+🏠 Адреса (CallApp): {callapp_addresses}
+📝 Описание (CallApp): {callapp_description}
+🕒 Часы работы (CallApp): {callapp_opening_hours}
+🌍 Координаты (CallApp): {callapp_lat}, {callapp_lng}
+⚠️ Spam Score (CallApp): {callapp_spam_score}
+⭐ Priority (CallApp): {callapp_priority}
 🌐 ФИО (EyeCon): {eyecon_api_name}
 🔎 ФИО (ViewCaller): {viewcaller_api_name}
 
@@ -97,5 +96,9 @@ async def text(message: types.Message):
 
 
 # Main loop
+async def main():
+    dp.include_router(router)
+    await dp.start_polling(bot, skip_updates=True)
+
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())
