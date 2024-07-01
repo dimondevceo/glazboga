@@ -1,17 +1,19 @@
 # First of all, you need to register and get a subscription to this api:
 # https://probivapi.com/
 
-from aiogram import Bot, Dispatcher, types
+from aiogram.types import Message, BufferedInputFile
+from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message
 import requests
 import asyncio
+import base64
+import io
 
 # Telegram bot token
-API_TOKEN = "___TELEGRAM_API_TOKEN___"
+API_TOKEN = "___TELEGRAM_BOT_TOKEN___"
 
 # ProbivAPI secret key
-PROBIVAPI_KEY = "___PROBIVAPI_TOKEN___"
+PROBIVAPI_KEY = "___PROBIVAPI_KEY___"
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
@@ -29,7 +31,7 @@ async def send_welcome(message: Message):
 
 
 # This is the main probiv function that returns a json and formats it, then sends it
-@dp.message(content_types=['text'])
+@dp.message()
 async def text(message: Message):
     # Get the message text and interpret it as a phone number
     nomer = message.text
@@ -37,6 +39,7 @@ async def text(message: Message):
 
     # The endpoint for the probiv API that passes as a query the phone number
     url = f"https://probivapi.com/api/phone/info/{nomer}"
+    pic_url = f"https://probivapi.com/api/phone/pic/{nomer}"
 
     # Necessary headers for the API to work
     head = {
@@ -48,11 +51,21 @@ async def text(message: Message):
     response = requests.get(url, headers=head)
     print(response.text)
 
+    # Send the request for the profile picture and print the result for debugging
+    pic_response = requests.get(pic_url, headers=head)
+    # print(pic_response.text)
+
     # Load the data of the response into a JSON object
     try:
         json_response = response.json()
     except Exception:
         json_response = {}
+
+    # Decode picture from base64
+    try:
+        pic_data = base64.b64decode(pic_response.text)
+    except Exception:
+        pic_data = None
 
     # Integrated CallApp API
     callapp_data = json_response.get('callapp', {})
@@ -74,24 +87,32 @@ async def text(message: Message):
     viewcaller_name_list = [tag.get('name', 'Not found') for tag in json_response.get('viewcaller', [])]
     viewcaller_api_name = ', '.join(viewcaller_name_list)
 
-    # Send the formatted data to the user on Telegram
-    await message.answer(f"""📱 ФИО (CallApp): {callapp_api_name}
-📧 Emails (CallApp): {callapp_emails}
-🌐 Сайты (CallApp): {callapp_websites}
-🏠 Адреса (CallApp): {callapp_addresses}
-📝 Описание (CallApp): {callapp_description}
-🕒 Часы работы (CallApp): {callapp_opening_hours}
-🌍 Координаты (CallApp): {callapp_lat}, {callapp_lng}
-⚠️ Spam Score (CallApp): {callapp_spam_score}
-⭐ Priority (CallApp): {callapp_priority}
-🌐 ФИО (EyeCon): {eyecon_api_name}
-🔎 ФИО (ViewCaller): {viewcaller_api_name}
+    dosie = f"""┏ ✅ Dosie for {nomer}
+┣ 📱 ФИО (CallApp): {callapp_api_name}
+┣ 📧 Emails (CallApp): {callapp_emails}
+┣ 🌐 Сайты (CallApp): {callapp_websites}
+┣ 🏠 Адреса (CallApp): {callapp_addresses}
+┣ 📝 Описание (CallApp): {callapp_description}
+┣ 🕒 Часы работы (CallApp): {callapp_opening_hours}
+┣ 🌍 Координаты (CallApp): {callapp_lat}, {callapp_lng}
+┣ ⚠️ Spam Score (CallApp): {callapp_spam_score}
+┣ ⭐ Priority (CallApp): {callapp_priority}
+┣ 🌐 ФИО (EyeCon): {eyecon_api_name}
+┣ 🔎 ФИО (ViewCaller): {viewcaller_api_name}
+┗ 👇 Еще...
 
 @probivapi
-                           
+                        
 Код бота: https://github.com/dimondevceo/glazboga/
 
-Пробив API: https://probivapi.com""")
+Пробив API: https://probivapi.com"""
+
+    # Send the formatted data to the user on Telegram
+    if pic_data:
+        pic_bytes = bytes(pic_data)
+        await message.answer_photo(BufferedInputFile(pic_bytes, filename=f"{nomer}.jpg"), caption=dosie)
+    else:
+        await message.answer(dosie)
 
 
 # Main loop
