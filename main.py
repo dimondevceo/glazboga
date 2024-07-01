@@ -55,16 +55,21 @@ async def text(message: types.Message):
 
     # Catch errors depending on the response
     # Integrated TrueCaller API
-    try:
-        truecaller_api_name = str(json_response['truecaller']['data'][0]['name'])
-    except Exception:
-        truecaller_api_name = 'Not found'
+    # try:
+    #     truecaller_api_name = str(json_response['truecaller']['data'][0]['name'])
+    # except Exception:
+    #     truecaller_api_name = 'Not found'
     # Integrated Numbuster API
+    # try:
+    #     numbuster_api_name = str(json_response['numbuster']['averageProfile']['firstName']) + \
+    #     str(json_response['numbuster']['averageProfile']['lastName'])
+    # except Exception:
+    #     numbuster_api_name = 'Not found'
+    # Integrated CallApp API
     try:
-        numbuster_api_name = str(json_response['numbuster']['averageProfile']['firstName']) + \
-        str(json_response['numbuster']['averageProfile']['lastName'])
+        callapp_api_name = str(json_response['callapp']['name'])
     except Exception:
-        numbuster_api_name = 'Not found'
+        callapp_api_name = 'Not found'
     # Integrated EyeCon API
     try:
         eyecon_api_name = str(json_response['eyecon'])
@@ -80,19 +85,15 @@ async def text(message: types.Message):
         viewcaller_api_name = 'Not found'
 
     # Send the formatted data to the user on Telegram
-    await bot.send_message(message.chat.id,f"""
-                           
-                           📱 ФИО (Numbuster): {numbuster_api_name}
-                           🌐 ФИО (EyeCon): {eyecon_api_name}
-                           🔎 ФИО (ViewCaller): {viewcaller_api_name}
-                           📞 ФИО (TrueCaller): {truecaller_api_name}
+    await bot.send_message(message.chat.id,f"""📱 ФИО (CallApp): {callapp_api_name}
+🌐 ФИО (EyeCon): {eyecon_api_name}
+🔎 ФИО (ViewCaller): {viewcaller_api_name}
 
-                           @dimondev_ru
+@probivapi
                            
-                           Код бота: https://github.com/SegYT/glazboga/
+Код бота: https://github.com/dimondevceo/glazboga/
 
-                           Пробив API: https://probivapi.com
-                           """)
+Пробив API: https://probivapi.com""")
 
 
 # Main loop
