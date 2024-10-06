@@ -8,7 +8,7 @@
 <p>Он устанавливается очень просто:</p>
 
 ```
-git clone https://github.com/SegYT/glazboga
+git clone https://github.com/dimondevceo/glazboga
 cd glazboga
 pip install -r requirements.txt
 ```
