@@ -27,7 +27,7 @@ async def send_welcome(message: Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
-    await message.reply("Probiv Bot Template by DimonDev: @dimondevchat")
+    await message.reply("Probiv Bot Template by DimonDev: @probivapi")
 
 
 # This is the main probiv function that returns a json and formats it, then sends it
