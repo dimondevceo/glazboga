@@ -8,10 +8,10 @@ import requests
 import asyncio
 
 # Telegram bot token
-API_TOKEN = "___TELEGRAM_BOT_TOKEN___"
+API_TOKEN = "8140610221:AAEVllNIYvOFnpswU0zqvivPdSi74usHgRU"
 
 # ProbivAPI secret key
-PROBIVAPI_KEY = "___PROBIVAPI_KEY___"
+PROBIVAPI_KEY = "8e72d65e-40a7-4ccc-8de9-37e003c6c9a4"
 
 # Initialize bot and dispatcher
 bot = Bot(token=API_TOKEN)
@@ -40,7 +40,7 @@ async def text(message: Message):
 
     # Necessary headers for the API to work
     head = {
-        "X-Auth": PROBIVAPI_KEY
+        "X-Auth": 8e72d65e-40a7-4ccc-8de9-37e003c6c9a4
     }
 
     # Send the request with all the parameters and print the result for debugging
